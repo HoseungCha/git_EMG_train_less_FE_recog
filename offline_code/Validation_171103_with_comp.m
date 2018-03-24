@@ -7,8 +7,8 @@ addpath(genpath(fullfile(parentdir,'functions')));
 % F = load(fullfile(cd,'result','17_09_18_172929_Features_extracted'));
 % F = rmfield(F,'params'); F_name = fieldnames(F);
 load(fullfile(parentdir,'DB','ProcessedDB','FEATS_ХыЧе.mat'));
-load(fullfile(parentdir,'DB','ProcessedDB','rsc_online',...
-    '17_09_18_172929_Features_extracted.mat'));
+% load(fullfile(parentdir,'DB','ProcessedDB','rsc_online',...
+%     '17_09_18_172929_Features_extracted.mat'));
 
 % feature indexing
 idx_feat_CC = 1:24;

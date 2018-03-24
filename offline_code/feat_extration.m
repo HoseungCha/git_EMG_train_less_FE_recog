@@ -172,5 +172,6 @@ save(fullfile(parentdir,'DB','ProcessedDB',sprintf('feat_set_%s',DB_set_type)),.
 f1 = load(fullfile(parentdir,'DB','ProcessedDB',sprintf('feat_set_%s','1st')));
 f2 = load(fullfile(parentdir,'DB','ProcessedDB',sprintf('feat_set_%s','2nd')));
 feat_set_combined = cat(5,f1.Features,f2.Features);
-
+save(fullfile(parentdir,'DB','ProcessedDB',sprintf('feat_set_combined')),...
+    'feat_set_combined'); % saving concatinated feature set from DB1 and DB2
 
