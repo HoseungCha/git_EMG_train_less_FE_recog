@@ -1,12 +1,22 @@
+%----------------------------------------------------------------------
 % 2017.09.11 에 DTW적요이 잘안되기도 하고, 새로운 Feat 조합을 찾기위한 코드
 % 2017.11.11 0.1초 increase 적용, Fear 없애서 다시 최적의 조합 Feat 탐색
+% 2018.03.24 0.05초 increase 적용
+% developed by Ho-Seung Cha, Ph.D Student,
+% CONE Lab, Biomedical Engineering Dept. Hanyang University
+% under supervison of Prof. Chang-Hwan Im
+% All rights are reserved to the author and the laboratory
+% contact: hoseungcha@gmail.com
+%---------------------------------------------------------------------
+
 clc; close all; clear all;
 parentdir=(fileparts(fileparts(pwd)));
 addpath(genpath(fullfile(parentdir,'functions')));
 %% Feature SET 가져오기
 % F = load(fullfile(cd,'result','17_09_18_172929_Features_extracted'));
 % F = rmfield(F,'params'); F_name = fieldnames(F);
-load(fullfile(parentdir,'DB','ProcessedDB','FEATS_통합.mat'));
+load(fullfile(parentdir,'DB','ProcessedDB','feat_set_combined.mat'));
+Features = feat_set_combined; clear feat_set_combined;
 % load(fullfile(parentdir,'DB','ProcessedDB','rsc_online',...
 %     '17_09_18_172929_Features_extracted.mat'));
 
