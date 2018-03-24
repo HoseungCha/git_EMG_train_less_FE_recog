@@ -93,29 +93,29 @@ for N_featpair = 4  % choose numbe of feature pairs. % 참고: feature 4개 사용했�
             train = reshape(train, [N_Seg*N_FE, size(train,3)]);
             label = repmat(1:N_FE,[N_Seg,1]); label = label(:);
             % prepare user DB and similar DB from database
-            if (N_comp>0) %%%%%%%%%get similar DB%%%%%%%%%%%%%%%%%%%%%%%%%%
-                d_similar = cell(size(idx_F,2),1); labe_d = cell(size(idx_F,2),1);
+            if (N_comp>0) %%%%%%%%%compensating%%%%%%%%%%%%%%%%%%%%%%%%%%
+                comp_d = cell(size(idx_F,2),1); labe_d = cell(size(idx_F,2),1);
                 for i_featp = 1 : size(idx_F,2)
                     count = 1;
-                    d_similar{i_featp} = zeros(N_FE*N_Seg,feat_size(i_featp));
-                    labe_d{i_featp} = zeros(length(d_similar{i_featp}),1);
+                    comp_d{i_featp} = zeros(N_FE*N_Seg,feat_size(i_featp));
+                    labe_d{i_featp} = zeros(length(comp_d{i_featp}),1);
                     feat_name  = F_name{idx_F(i_feat,i_featp)};
-                    load(fullfile(parentdir,'DB','dist','T',['T_',num2str(i_sub),'_',...
-                        num2str(i_trl),'_',feat_name,'_100.mat']));
+                    load(fullfile(cd,'dist','T',['T_',num2str(i_sub),'_',...
+                        num2str(i_trl),'_',feat_name,'_2.mat']));
                     T(:,idx2reject) = [];
                     for i_FE = 1 : N_FE
                         for i_seg = 1 : N_Seg
                             for i_comp = 1 : N_comp
-                                d_similar{i_featp}(count,:) = T{i_seg,i_FE}(:,i_comp)';
+                                comp_d{i_featp}(count,:) = T{i_seg,i_FE}(:,i_comp)';
                                 labe_d{i_featp}(count) = i_FE;
                                 count = count + 1 ;
                             end
                         end
                     end
-                    d_similar{i_featp} = d_similar{i_featp}';
+                    comp_d{i_featp} = comp_d{i_featp}';
                 end
 
-                t = [train;cell2mat(d_similar)']; l = [label;labe_d{1}];
+                t = [train;cell2mat(comp_d)']; l = [label;labe_d{1}];
             else%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
                 t = train;  l = label;
             end
