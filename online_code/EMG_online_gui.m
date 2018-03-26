@@ -70,6 +70,8 @@ guidata(hObject, handles);
 info.prog_mode=1;
 
 % 함수 경로 추가
+info.parentdir=(fileparts(fileparts(pwd)));
+% addpath(genpath(fullfile(info.parentdir,'functions')));
 addpath(genpath(fullfile(cd,'functions')));
 GUI_mode_presentation(handles);
 global initalize_button;
