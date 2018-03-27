@@ -14,6 +14,7 @@ function Process_EMG()
 %     myStop;
 %     disp(pd.EMG.datasize);
 %     disp(info.raw_pos-1);
+%     myStop;
     curr_win =pd.EMG.getLastN(204);
     temp_rms = sqrt(mean(curr_win.^2));
 %     pd.f.RMS.addArray(temp_rms);
@@ -39,7 +40,7 @@ function Process_EMG()
                i_trl = find(info.FE_order==temp_FE_order(1));
                info.FeatSet{i_trl} = pd.featset.data;
                
-               pd.featset = circlequeue(30,info.Ch*3+info.Ch*4);%초기화
+               pd.featset = circlequeue(info.num_windows,info.ch*3+info.ch*4);%초기화
 %                info.FE_end_sign = 0;
                info.FE_start_sign = 0;
            end
@@ -70,7 +71,7 @@ function Process_EMG()
                    pd.test_result = circlequeue(60,1);%초기화
                    % Feat 저장
                    info.FeatSet{i_trl} = pd.featset.data;
-                   pd.featset = circlequeue(60,info.Ch*3+info.Ch*4);%초기화
+                   pd.featset = circlequeue(60,info.ch*3+info.ch*4);%초기화
                    if isempty(info.test_result{i_trl})
                        myStop;
                        a=1;

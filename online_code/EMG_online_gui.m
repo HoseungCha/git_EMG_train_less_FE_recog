@@ -60,23 +60,21 @@ function EMG_online_gui_OpeningFcn(hObject, eventdata, handles, varargin)
 % handles    structure with handles and user data (see GUIDATA)
 % varargin   command line arguments to EMG_online_gui (see VARARGIN)
 global info;
+global initalize_button;
 % Choose default command line output for EMG_online_gui
 handles.output = hObject;
 
 % Update handles structure
 guidata(hObject, handles);
 
-% Defualt online mode
-info.prog_mode=1;
 
-% 함수 경로 추가
-info.parentdir=(fileparts(fileparts(pwd)));
-% addpath(genpath(fullfile(info.parentdir,'functions')));
-addpath(genpath(fullfile(cd,'functions')));
-GUI_mode_presentation(handles);
-global initalize_button;
+info.parentdir=(fileparts(fileparts(pwd))); % resource path
+addpath(genpath(fullfile(cd,'functions'))); % 함수 경로 추가
+GUI_mode_presentation(handles); % GUI presentation
+info.prog_mode=1; % Defualt online mode
 initalize_button = 0;
-info.use_biosmix = 0;
+info.use_biosmix = 0; % identifier if we use biosemix for online analysis
+
 % UIWAIT makes EMG_online_gui wait for user response (see UIRESUME)
 % uiwait(handles.figure1);
 
@@ -182,10 +180,10 @@ global initalize_button;
 global info;
 myStop();
 clear biosemix;
-if info.use_biosmix == 0
-    fclose(info.tcpipClient);
-    delete(info.tcpipClient);
-end
+% if info.use_biosmix == 0
+%     fclose(info.tcpipClient);
+%     delete(info.tcpipClient);
+% end
 initalize_button  = 0;
 % closePreview(info.cam);
 % info = rmfield(info, 'cam');
@@ -198,6 +196,7 @@ function pushbutton_open_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 global info;
+% load bdf file DB 
 [FileName,PathName,~] = uigetfile(['.','\*.bdf']);
 if FileName==0
     return;

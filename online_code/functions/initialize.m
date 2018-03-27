@@ -31,8 +31,8 @@ end
 info.FE_name = {'angry','contemptuous(right)','disgusted','fearfull','happy','neutral',...
     'sad','surprised'};
 info.N_FE = length(info.FE_name); % 표정 갯수
-info.FE_order = randperm(info.N_FE); % Train을 할 경우, 표정은 랜덤으로 제시되도록 함
-info.FE_order4GUI = info.FE_order; % info.FE_order4GUI는 처음 표정이 랜덤으로 섞인 순서를 백업하는 용도
+info.FE_order = randperm(info.N_FE); % Train을 할 경우, 표정은 랜덤으로 제시되도록 함(백업용)
+info.FE_order4GUI = info.FE_order; % info.FE_order4GUI (사용)
 info.ch_rawdata = 12; % num of channel of rawdata
 info.ch = 6; % num channel of bipolar channel for EMG acquisition
 info.Fc = 2048; % BIOSEMI sampling rate
@@ -48,8 +48,8 @@ info.timer.RestInst = timer( 'TimerFcn','GUI_rest_inst',...
 info.FE_end_sign = 0; 
 info.FE_start_sign = 0;
 %% timer vairable initialize
-info.timer.sp = 0.05; % sampling peroriod for timer 
-info.timer.Fc = floor(info.Fcinfo.timer); % timer sampling frequency
+info.timer.sp = 0.1; % sampling peroriod for timer 
+info.timer.Fc = floor(info.Fc*info.timer.sp); % timer sampling frequency
 %% timer setup
 period4timer = round(info.timer.Fc/info.Fc,3);
 % period4timer = 0.01;
@@ -57,7 +57,7 @@ period4timer = round(info.timer.Fc/info.Fc,3);
 % info.timer.online_code = timer('TimerFcn','online_code','StartDelay',...
 %     period4timer, 'Period',period4timer, 'ExecutionMode', 'fixedRate');
 info.timer.online_code = timer('TimerFcn','online_code',...
-    'Period',period4timer 'ExecutionMode', 'fixedRate');
+    'Period',period4timer, 'ExecutionMode', 'fixedRate');
 % info.timer.process_emg = timer('TimerFcn','Process_EMG',...
 %     'Period', 0.1, 'ExecutionMode', 'fixedrate');
 info.timer.onPaint = timer('TimerFcn','onPaint','StartDelay',...
@@ -88,7 +88,7 @@ time_for_experiment = 10 * 60; % 10 minutes
 info.rawdata = zeros(info.Fc*time_for_experiment,info.ch_rawdata+1);
 info.raw_pos = 1;
 % % offline data
-% info.curr_pos=1;
+info.curr_pos=1;
 %% EMG preprocessing variable init
 filter_order = 4; Fn = info.Fc/2;
 Notch_freq = [58 62];

@@ -13,32 +13,30 @@ global pd;
 try
     %data input
     if info.prog_mode ==0
-        if info.curr_pos+info.timer.SF-1 > size(info.bdf.data,2)
+        if info.curr_pos+info.timer.Fc-1 > size(info.bdf.data,2)
             myStop();
             return;
         end
-        segment = info.bdf.data(:,info.curr_pos:info.curr_pos+info.timer.SF-1);
+        segment = info.bdf.data(:,info.curr_pos:info.curr_pos+info.timer.Fc-1);
         segment = double(segment)';
-        trg_segment = info.bdf.trg(info.curr_pos:info.curr_pos+info.timer.SF-1);
-        info.curr_pos = info.curr_pos+ info.timer.SF;
+        trg_segment = info.bdf.trg(info.curr_pos:info.curr_pos+info.timer.Fc-1);
+        info.curr_pos = info.curr_pos+ info.timer.Fc;
     elseif info.prog_mode ==1
         if (info.use_biosmix ==1)
             try
-                segment = biosemi_signal_recieve(info.total_ch);
+                segment = biosemi_signal_recieve(info.ch_rawdata);
             catch me
                 if strfind(me.message,'biosemix')
                     errordlg('Please check you are using matlab 32bit version. and please Stop now');
                 end
             end
         elseif (info.use_biosmix ==0)
-%             if pd.TCP_buffer.datasize<info.timer.SF % TCP 버퍼가 아직 안쌓였으면 return 시킴
+%             if pd.TCP_buffer.datasize<info.timer.Fc % TCP 버퍼가 아직 안쌓였으면 return 시킴
 %                 segment = pd.TCP_buffer.getLastN(pd.TCP_buffer.datasize);
 %             else
-%                 segment = pd.TCP_buffer.getLastN(info.timer.SF);
+%                 segment = pd.TCP_buffer.getLastN(info.timer.Fc);
 %             end
-% myStop;
             segment = TcpIpClientMatlabV1();
-%             clc;
 %             segment = segment(:,1:12);
         end
     end
@@ -47,18 +45,20 @@ try
 %     if ~exist('segment','var')
 %         return;
 %     end
-%     myStop;
     seg_size = size(segment,1);
 %     disp(seg_size);
     if seg_size == 0
 %         myStop;
         return;
     end
-    info.rawdata(info.raw_pos:info.raw_pos+seg_size-1,1:info.total_ch) = segment;
+    info.rawdata(info.raw_pos:info.raw_pos+seg_size-1,1:info.ch_rawdata)...
+        = segment;
     if(info.FE_start_sign)        
-        info.rawdata(info.raw_pos:info.raw_pos+seg_size-1,info.total_ch+1) = ones(seg_size,1);
+        info.rawdata(info.raw_pos:info.raw_pos+seg_size-1,info.ch_rawdata+1)...
+            = ones(seg_size,1);
     else
-        info.rawdata(info.raw_pos:info.raw_pos+seg_size-1,info.total_ch+1) = zeros(seg_size,1);
+        info.rawdata(info.raw_pos:info.raw_pos+seg_size-1,info.ch_rawdata+1)...
+            = zeros(seg_size,1);
     end
     info.raw_pos = info.raw_pos + seg_size;
     
@@ -90,6 +90,7 @@ try
     
     Process_EMG(); % EMG 신호 처리 및 분류
 catch ex
+    struct2cell(ex.stack)'
     myStop;
     keyboard;
 end

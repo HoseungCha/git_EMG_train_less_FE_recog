@@ -41,7 +41,7 @@ N_seg = 30;
 N_feat = 42;
 N_trl = 20;
 Time_expression = 3; % 3-sec
-wininc = floor((Time_expression/N_seg)*SF2use); 
+wininc = floor(Time_expression)*SF2use); 
 
 %% 결과 memory alloation
 Features = zeros(N_seg,N_feat,N_FaExp,20,N_subject);
@@ -113,8 +113,7 @@ for i_sub= 1:N_subject
 
         %% Feat extration with windows 
         % increase size = 0.05;, win size = 0.1;
-        winsize = floor(0.1*SF2use);
-%         wininc = floor(0.05*SF2use); 
+        winsize = floor(0.1*SF2use); wininc = floor(0.05*SF2use); 
         % 0.1초 윈도우, 0.05초 씩 증가
         N_window = floor((length(filtered_data) - winsize)/wininc)+1;
         temp_feat = zeros(N_window,N_feat); Window_Endsamples = zeros(N_window,1);
@@ -160,10 +159,10 @@ for i_sub= 1:N_subject
         end 
     end  
     %% plot the DB 
-%     c = getframe(hf);
-%     imwrite(c.cdata,fullfile(parentdir,'DB','DB_inspection',...
-%         [sub_name(1:3),'.jpg']));
-%     close(hf);
+    c = getframe(hf);
+    imwrite(c.cdata,fullfile(parentdir,'DB','DB_inspection',...
+        [sub_name(1:3),'.jpg']));
+    close(hf);
 end
 %% 결과 저장
 save(fullfile(parentdir,'DB','ProcessedDB',sprintf('feat_set_%s_seg_%d',...

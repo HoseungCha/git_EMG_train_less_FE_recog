@@ -1,3 +1,10 @@
+%--------------------------------------------------------------------------
+% train LDA when train is finisehd
+%--------------------------------------------------------------------------
+% by Ho-Seung Cha, Ph.D Student
+% Ph.D candidate @ Department of Biomedical Engineering, Hanyang University
+% hoseungcha@gmail.com
+%--------------------------------------------------------------------------
 function find_feat_and_train()
 tic;
 global info;
