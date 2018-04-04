@@ -11,37 +11,37 @@ clc; close all; clear all;
 parentdir=(fileparts(fileparts(pwd)));
 addpath(genpath(fullfile(parentdir,'functions')));
 
-
-
 %% Feature SET 가져오기
 name_feat_file = 'feat_set_combined_of_tless_prac_seg_60_using_ch4';
 load(fullfile(parentdir,'DB','ProcessedDB',name_feat_file));
 Features = feat_set_combined; clear feat_set_combined;
 
 %% feature indexing
+% 6channel
 idx_feat.CC = 1:24;
 idx_feat.RMS = 25:30;
 idx_feat.SampEN = 31:36;
 idx_feat.WL = 37:42;
+
+% when using DB of ch4 ver
 if strfind(name_feat_file,'ch4')
     idx_feat.CC = 1:16;
     idx_feat.RMS = 17:20;
     idx_feat.SampEN = 21:24;
-    idx_feat_WL = 25:28;
+    idx_feat.WL = 25:28;
 end
-
 
 % feat names and indices
 names_feat = fieldnames(idx_feat);
 idx_feat = struct2cell(idx_feat);
 N_ftype = length(names_feat);
 
-% 저장 폴더 설정
-folder_name2make = ['T5_',name_feat_file];
-path_made = make_path_n_retrun_the_path(fullfile(parentdir,'DB','dist'),folder_name2make);
+% makeing folder for results 결과 저장 폴더 설정
+folder_name2make = ['T5_',name_feat_file]; % 폴더 이름
+path_made = make_path_n_retrun_the_path(fullfile(parentdir,...
+    'DB','dist'),folder_name2make); % 결과 저장 폴더 경로
 
-for i_FeatName = 1
-    
+for i_FeatName = 4
 disp(names_feat{i_FeatName});
 TEMP_FEAT = Features(:,idx_feat{i_FeatName} ,:,:,:);
 
@@ -65,9 +65,8 @@ Idx_dist = reshape(Idx_dist,[N_trial,(N_sub-1)]);
 
 % eval(sprintf('%s = cell(30,20,63,8);',FeatNames{i_FeatName}));
 T = cell(N_Seg,N_FE);
-for i_sub = 31 : N_sub
+for i_sub = 23 : N_sub
     for i_trial = 1 : N_trial
-        
         tic;
         for i_seg = 1 : N_Seg
             fprintf('%s i_sub:%d i_trial:%d i_seg:%d\n',names_feat{i_FeatName},i_sub,i_trial,i_seg);
